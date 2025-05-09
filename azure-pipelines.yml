@@ -20,3 +20,9 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean'
+
+- task: CmdLine@2
+  displayName: 'Run Java App'
+  inputs:
+    script: |
+    java -cp "$(System.DefaultWorkingDirectory)/_meghana-126_prog10/Javateam/src/main/java/com/dineshonjava/*" App.java
