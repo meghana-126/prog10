@@ -19,10 +19,10 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean'
+    goals: 'clean install'
 
 - task: CmdLine@2
   displayName: 'Run Java App'
   inputs:
     script: |
-    java -cp "$(System.DefaultWorkingDirectory)/_meghana-126_prog10/Javateam/src/main/java/com/dineshonjava/*" App.java
+      java -cp target/Javateam-1.0-SNAPSHOT.jar com.dineshonjava.App
