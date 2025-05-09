@@ -21,8 +21,26 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install'
 
-- task: CmdLine@2
+- task: Bash@3
+  name: FindJar
+  displayName: 'Find built JAR file'
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "##[group]Locating built JAR file..."
+      jar_file=$(find Javateam/target -type f -name "*.jar" | grep -v 'original' | head -n 1)
+      if [[ -z "$jar_file" ]]; then
+        echo "##[error]No JAR file found!"
+        exit 1
+      fi
+      echo "Found JAR: $jar_file"
+      echo "##vso[task.setvariable variable=jarPath]$jar_file"
+      echo "##[endgroup]"
+
+- task: Bash@3
   displayName: 'Run Java App'
   inputs:
+    targetType: 'inline'
     script: |
-      java -cp target/Javateam-1.0-SNAPSHOT.jar com.dineshonjava.App
+      echo "Running app from: $(jarPath)"
+      java -cp "$(jarPath)" com.dineshonjava.App
